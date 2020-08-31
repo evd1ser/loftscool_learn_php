@@ -1,0 +1,35 @@
+{% extends "base/layout.twig" %}
+
+{% block title %}Авторизация{% endblock %}
+{% block content %}
+    <h1>Блог</h1>
+
+    <div>
+        {% for message in messages %}
+            <div>
+                <div>{{ message.getUser().name }} в {{ message.create_at }}</div>
+                <p>
+                    {{ message.message }}
+                </p>
+
+                {% if(message.getImage()) %}
+                    <img src="{{ message.getImage() }}" alt="" style="width: 100%; max-width: 320px; border-radius: 10px">
+                {% endif %}
+                {% if(user.isAdmin()) %}
+                    <form action="" method="post">
+                        <input type="message_id" value="{{ message.id }}">
+                        <button>delete</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <form action="/message/create" method="post" enctype="multipart/form-data" >
+        <textarea name="message" cols="30" rows="10" required></textarea>
+        <input type="file" name="image">
+        <button>save</button>
+    </form>
+
+{% endblock %}

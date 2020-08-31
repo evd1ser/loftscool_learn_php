@@ -1,0 +1,36 @@
+{% extends "base/layout.twig" %}
+
+{% block title %}Авторизация{% endblock %}
+{% block content %}
+    <h1>Авторизация</h1>
+    <form action="/login/auth" method="post">
+
+        <label>
+            <input type="email" placeholder="email" name="email">
+        </label>
+        <label>
+            <input type="password" placeholder="password" name="password">
+        </label>
+
+        <button>отправить</button>
+    </form>
+    <hr>
+    <h1>Регистрация</h1>
+    <form action="/login/registration" method="post">
+
+        <label>
+            <input type="name" placeholder="Имя" name="name">
+        </label>
+        <label>
+            <input type="email" placeholder="email" name="email">
+        </label>
+        <label>
+            <input type="password" placeholder="password" name="password">
+        </label>
+        <label>
+            <input type="password" placeholder="password" name="password_confirm">
+        </label>
+
+        <button>отправить</button>
+    </form>
+{% endblock %}
