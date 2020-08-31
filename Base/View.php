@@ -58,7 +58,6 @@ class View
             $loader = new \Twig\Loader\FilesystemLoader($templatePatches);
             $this->_twig = new \Twig\Environment($loader, [
               'cache' => false,
-              'autoescape' => false
             ]);
         }
 
