@@ -7,7 +7,7 @@
     <div>
         {% for message in messages %}
             <div>
-                <div>{{ message.getUser().name }} в {{ message.create_at }}</div>
+                <div>{{ message.getUser().name }} в {{ message.created_at }}</div>
                 <p>
                     {{ message.message }}
                 </p>
@@ -17,7 +17,7 @@
                 {% endif %}
                 {% if(user.isAdmin()) %}
                     <form action="" method="post">
-                        <input type="message_id" value="{{ message.id }}">
+                        <input type="hidden" hidden name='message_id' value="{{ message.id }}">
                         <button>delete</button>
                     </form>
                 {% endif %}

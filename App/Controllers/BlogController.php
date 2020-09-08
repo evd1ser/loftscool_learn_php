@@ -16,7 +16,7 @@ class BlogController extends ControllerAbstract
             $this->redirect('/login');
         }
 
-        $messages = MessageModel::getList(__METHOD__, 20, [], 'create_at');
+        $messages = MessageModel::limit(20)->get();
 
         $view = new View('blog.index');
         $view->messages = $messages;
@@ -81,7 +81,7 @@ class BlogController extends ControllerAbstract
         }
 
 
-        $messages = MessageModel::getList(__METHOD__, 20, [['user_id', '=', $user_id]], 'create_at');
+        $messages = MessageModel::getList(__METHOD__, 20, [['user_id', '=', $user_id]], 'created_at');
 
         $messages = flatten($messages);
 

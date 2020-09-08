@@ -6,6 +6,9 @@ use App\Models\UserModel;
 use Base\Dispatch\Dispatcher;
 use Base\Dispatch\DispatchException;
 use Base\Model\Factory;
+use Illuminate\Database\Capsule\Manager as Capsule;
+const CONNECTION_DEFAULT = 'default';
+const CONNECTION_SECOND = 'second';
 
 class Application
 {
@@ -24,6 +27,21 @@ class Application
 
     public function init()
     {
+        $capsule = new Capsule;
+
+        $capsule->addConnection([
+          'driver'    => $_ENV['DB_TYPE'] ?? 'mysql',
+          'host'      => $_ENV['DB_HOST'] ?? 'localhost',
+          'database'  => $_ENV['DB_NAME'],
+          'username'  => $_ENV['DB_USER'],
+          'password'  => $_ENV['DB_PASSWORD'],
+          'charset'   => 'utf8',
+          'collation' => 'utf8_unicode_ci',
+          'prefix'    => '',
+        ], CONNECTION_DEFAULT);
+        $capsule->setAsGlobal();
+        // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
+        $capsule->bootEloquent();
         // это глобальный контекст приложения доступный везде
         $this->_context = Context::getInstance();
         define('PRODUCTION', getenv('PRODUCTION'));
@@ -38,6 +56,8 @@ class Application
         $this->_context->setRequest($this->_request);
 
         $this->_initUser();
+
+
     }
 
     /**

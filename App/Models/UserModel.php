@@ -8,13 +8,29 @@ use Base\Models\ModelGetByIds;
 use Base\Models\ModelGetByIdTrait;
 use Base\Models\ModelGetList;
 use Base\Session;
-use http\Exception;
+
+use const Base\CONNECTION_DEFAULT;
 
 class UserModel extends BaseModel
 {
     use ModelGetByIdTrait;
     use ModelGetList;
     use ModelGetByIds;
+
+    public    $table      = "users";
+    protected $primaryKey = 'id';
+    protected $connection = CONNECTION_DEFAULT;
+
+    protected $fillable = ['email','name', 'password', 'info'];//разрешено редактировать только это, остальное запрещено
+
+    //    protected $guarded = ['id']; //запрещено редактировать только это, все остальное разрешено
+
+    public function posts()
+    {
+        // users.id == posts.user_id
+        return $this->hasMany(MessageModel::class, 'user_id', 'id');
+    }
+
 
     public static function getInstance()
     {
@@ -24,7 +40,7 @@ class UserModel extends BaseModel
     protected $fields = [
       'id',
       'name',
-      'create_at',
+      'created_at',
       'email',
       'password'
     ];
@@ -34,11 +50,6 @@ class UserModel extends BaseModel
       'email',
       'password'
     ];
-
-    public static function getTable()
-    {
-        return 'users';
-    }
 
     static public function loginByData($data)
     {
@@ -83,17 +94,17 @@ class UserModel extends BaseModel
     {
         $db = Context::getInstance()
           ->getDbConnection();
-        $select = "SELECT * FROM users WHERE `email` = :email AND password = :password_hash";
 
-        $data = $db->fetchOne($select, __METHOD__, [
-          ':email' => $this->email,
-          ':password_hash' => $this->password
-        ]);
+        try {
+            $user = UserModel::where(['email' => $this->email, 'password' => $this->password])->firstOrFail();
 
-        if ($data) {
-            $session = Session::instance();
-            $session->save((int)$data['id']);
-            return true;
+            if ($user) {
+                $session = Session::instance();
+                $session->save((int)$user->id);
+                return true;
+            }
+        } catch (\Exception $e){
+            return false;
         }
 
         return false;

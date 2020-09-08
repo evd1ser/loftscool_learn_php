@@ -6,6 +6,7 @@ use Base\Models\BaseModel;
 use Base\Models\ModelGetByIds;
 use Base\Models\ModelGetByIdTrait;
 use Base\Models\ModelGetList;
+use const Base\CONNECTION_DEFAULT;
 
 class MessageModel extends BaseModel
 {
@@ -13,30 +14,23 @@ class MessageModel extends BaseModel
     use ModelGetList;
     use ModelGetByIds;
 
+
+    public    $table      = "messages";
+    protected $primaryKey = 'id';
+    protected $connection = CONNECTION_DEFAULT;
+
+    protected $fillable = ['message', 'user_id'];//разрешено редактировать только это, остальное запрещено
+
+
     public static function getInstance()
     {
         return self::class;
     }
 
-    protected $fields      = [
-      'id',
-      'message',
-      'create_at',
-      'user_id',
-    ];
-    protected $fieldsSaved = [
-      'message',
-      'user_id',
-    ];
-
-    public static function getTable()
-    {
-        return 'messages';
-    }
 
     public function getUser()
     {
-        return UserModel::getById(__METHOD__, $this->user_id);
+        return $this->belongsTo(UserModel::class);
     }
 
     static public function initByData($data)

@@ -5,6 +5,9 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use Base\ControllerAbstract;
 use Base\View;
+use Swift_Mailer;
+use Swift_Message;
+use Swift_SmtpTransport;
 
 class MainController extends ControllerAbstract
 {
@@ -96,5 +99,28 @@ class MainController extends ControllerAbstract
         var_dump('created');
         die();
 
+    }
+
+    public function test() {
+        // Create the Transport
+        $transport = (new Swift_SmtpTransport('mail.evd1ser.ru', 25))
+          ->setUsername('info@evd1ser.ru')
+          ->setPassword('demodemo1!');
+
+        // Create the Mailer using your created Transport
+        $mailer = new Swift_Mailer($transport);
+
+        // Create a message
+        $message = (new Swift_Message('Test Message from php'))
+          ->setFrom(['info@evd1ser.ru' => 'my info'])
+          ->setTo(['evd1ser@gmail.com'])
+          ->setBody('Hellp loft php')
+        ;
+
+        // Send the message
+        $result = $mailer->send($message);
+
+        $this->noRender();
+        var_dump($result);
     }
 }

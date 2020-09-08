@@ -1,0 +1,33 @@
+{% extends "base/layout.twig" %}
+
+{% block title %}Авторизация{% endblock %}
+{% block content %}
+    <h1>Админка</h1>
+
+    <form action='/admin/create-user' method='post'>
+        <input type='text' name='name' placeholder='name'>
+        <br>
+        <input type='email' name='email' placeholder='email'>
+        <br>
+        <input type='password' name='password' placeholder='password'>
+        <br>
+        <button type='submit'>save user</button>
+    </form>
+    <hr>
+    <hr>
+    <div>
+        {% for user in users %}
+            <form action='/admin/user-update'>
+                <input type='hidden' hidden name='user_id' value='{{ user.id }}'>
+                <input type='text' name='name' value='{{ user.name }}' placeholder='name'>
+                <input type='email' name='email' value='{{ user.email }}' placeholder='email'>
+                <input type='password' name='password' value='' placeholder='passwordIfNeed'>
+
+                <button type='submit'>update user</button>
+
+            </form>
+            <hr>
+        {% endfor %}
+    </div>
+
+{% endblock %}

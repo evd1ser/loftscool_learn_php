@@ -45,10 +45,14 @@ class Dispatcher
           '' => 'BlogController@index',
           'login' => 'MainController@login',
           'logout' => 'MainController@logOut',
+          'test' => 'MainController@test',
           'login/auth' => 'MainController@loginPost',
           'login/registration' => 'MainController@registrationPost',
           'message/create' => 'BlogController@createMessage',
           'api/messages' => 'BlogController@apiGet',
+          'admin' => 'AdminController@index',
+          'admin/create-user' => 'AdminController@createUser',
+          'admin/user-update' => 'AdminController@updateUser',
         ];
     }
 

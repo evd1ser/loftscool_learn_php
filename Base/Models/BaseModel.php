@@ -3,26 +3,15 @@
 namespace Base\Models;
 
 use Base\DbConnection;
+use Illuminate\Database\Eloquent\Model;
 
-abstract class BaseModel
+abstract class BaseModel extends Model
 {
     protected $fields      = [];
     protected $fieldsSaved = [];
     private   $data        = [];
 
-    /**
-     * @return string
-     */
-    public function __get($name)
-    {
-        if(isset($this->$name)){
-            return $this->$name;
-        }
 
-        return null;
-    }
-
-    abstract public static function getTable();
 
     abstract public static function getInstance();
 
@@ -35,7 +24,7 @@ abstract class BaseModel
         }
     }
 
-    public function save()
+    public function saveOld()
     {
         $db = DbConnection::instance();
 

@@ -49,7 +49,7 @@ class Request
 
     private function validate($urlPart)
     {
-        $ret = preg_match('/^[a-zA-Z0-9]+$/', $urlPart);
+        $ret = preg_match('/^[a-zA-Z0-9\-]+$/', $urlPart);
         return $ret;
     }
 
