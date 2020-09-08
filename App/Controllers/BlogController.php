@@ -16,7 +16,7 @@ class BlogController extends ControllerAbstract
             $this->redirect('/login');
         }
 
-        $messages = MessageModel::limit(20)->get();
+        $messages = MessageModel::limit(20)->latest()->get();
 
         $view = new View('blog.index');
         $view->messages = $messages;
@@ -31,19 +31,20 @@ class BlogController extends ControllerAbstract
             $this->redirect('/login');
         }
 
-        $message = MessageModel::initByData([
+        $message = MessageModel::create([
           'message' => $this->p('message'),
           'user_id' => $this->USER->id,
         ]);
 
-        if (isset($_FILES["image"])) {
+        var_dump($_FILES["image"]);
+
+        if (isset($_FILES["image"]) && !empty($_FILES["image"])) {
 
             $img_file = $_FILES["image"]["name"];
             $folderName = __DIR__ . "/../../public/images/";
             $validExt = array("png");
 
             if ($img_file == "") {
-                $msg = errorMessage("Attach an image");
             } elseif ($_FILES["image"]["size"] <= 0) {
                 $msg = errorMessage("Image is not proper.");
             } else {
